@@ -28,6 +28,22 @@ struct node
 struct node *head = NULL;
 struct node *current = NULL;
 
+int getLength()
+{
+    if(head == NULL) return 0;
+
+    struct node *ptr = head;
+    int count = 0;
+
+    while(ptr != NULL)
+    {
+        count++;
+        ptr = ptr->next;
+    }
+
+    return count;
+}
+
 //print the order of the linked list
 void printList()
 {
@@ -45,22 +61,6 @@ void printList()
         ptr = ptr->next;
     }
     printf("\n");
-}
-
-int getLength()
-{
-    if(head == NULL) return 0;
-
-    struct node *ptr = head;
-    int count = 0;
-
-    while(ptr != NULL)
-    {
-        count++;
-        ptr = ptr->next;
-    }
-
-    return count;
 }
 
 bool searchFor(int data)
@@ -144,9 +144,8 @@ void delete(int data)
 
     struct node *previous = NULL;
     struct node *current;
-    bool statement = searchFor(data);
 
-    while(statement)
+    while(searchFor(data))
     {
         current = head;
         while(current->data != data)
@@ -157,7 +156,6 @@ void delete(int data)
 
         if(current == head) head = head->next; //deleting head
         else previous->next = current->next; //delete node
-        statement = searchFor(data);
     }
 }
 

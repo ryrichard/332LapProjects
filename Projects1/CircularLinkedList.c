@@ -28,6 +28,22 @@ struct node
 struct node *head = NULL;
 struct node *current = NULL;
 
+int getLength()
+{
+    if(head == NULL) return 0;
+
+    struct node *ptr = head->next;
+    int count = 1;
+
+    while(ptr != head)
+    {
+        count++;
+        ptr = ptr->next;
+    }
+
+    return count;
+}
+
 //print the order of the linked list
 void printList()
 {
@@ -37,9 +53,9 @@ void printList()
         return;
     }
 
-    printf("List : ");
-    struct node *ptr = head;
-    while(ptr != NULL)
+    printf("List : %d ", head->data);
+    struct node *ptr = head->next;
+    while(ptr != head)
     {
         printf("%d ", ptr->data);
         ptr = ptr->next;
@@ -47,26 +63,12 @@ void printList()
     printf("\n");
 }
 
-int getLength()
-{
-    if(head == NULL) return 0;
-
-    struct node *ptr = head;
-    int count = 0;
-
-    while(ptr != NULL)
-    {
-        count++;
-        ptr = ptr->next;
-    }
-
-    return count;
-}
-
 bool searchFor(int data)
 {
-    struct node *iter = head;
-    while(iter != NULL)
+    if(head->data == data) return true;
+
+    struct node *iter = head->next;
+    while(iter != head)
     {
         if(iter->data == data) return true;
         iter = iter->next;
@@ -85,11 +87,18 @@ void insertFirst(int data)
     if(head != NULL)
     {
         newNode->next = head;
+        struct node *current = head;
+
+        while(current->next != head) 
+            current = current->next;
+
+        current->next = newNode;
         head = newNode;
     }
     else
     {
         head = newNode;
+        head->next = head;
     }
 }
 
@@ -100,10 +109,10 @@ void insertLast(int data)
 
     struct node *newNode = (struct node*) malloc (sizeof(struct node)); 
     newNode->data = data;
-
+    newNode->next = head;
     current = head;
 
-    while(current->next != NULL)
+    while(current->next != head)
         current = current->next;
     
     current->next = newNode;
@@ -117,11 +126,6 @@ void insert(int pos, int data)
             insertFirst(data);
             return;        
         }
-    if(getLength() < pos)
-    {
-        insertLast(data);
-        return;
-    }
 
     struct node *newNode = (struct node*) malloc (sizeof(struct node));
     newNode->data = data;
@@ -144,9 +148,8 @@ void delete(int data)
 
     struct node *previous = NULL;
     struct node *current;
-    bool statement = searchFor(data);
 
-    while(statement)
+    while(searchFor(data))
     {
         current = head;
         while(current->data != data)
@@ -155,9 +158,14 @@ void delete(int data)
             current = current->next;
         }
 
-        if(current == head) head = head->next; //deleting head
+        if(current == head)
+        {
+            while(current->next != head)
+                current = current->next;
+            current->next = head->next;
+            head = head->next; //deleting head
+        }
         else previous->next = current->next; //delete node
-        statement = searchFor(data);
     }
 }
 
