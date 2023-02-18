@@ -16,6 +16,8 @@ NOTE: Name your executable file as displaycontent and execute your program as
 
 int main(int argc, char* argv[])
 {
+    //might have to use perror("open")
+
     //open() .. https://www.man7.org/linux/man-pages/man2/open.2.html
     int fd;
 
