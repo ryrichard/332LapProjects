@@ -38,11 +38,11 @@ int main()
 		while(state) //send message
 		{
 			printf("Message Sent: ");
-			scanf ("%[^\n]%*c", msgs.mtext);
+			scanf ("%[^\n]%*c", msgs.mtext); //takes message as whole with spaces
 
 			msgsnd(msgid, &msgs, sizeof(msgs), 0);
 
-			if(strcmp(msgs.mtext, "Bye") == 0)
+			if(strcmp(msgs.mtext, "Bye") == 0) //compares string to look for "Bye" - ends message if found
 			{
 				printf("Ending Queue\n");
 				msgctl(msgid, IPC_RMID, NULL);
@@ -59,7 +59,7 @@ int main()
 			if(msgr.mtype != msgs.mtype)
 				printf("Message received: %s\n", msgr.mtext);
 
-			if(strcmp(msgr.mtext, "Bye") == 0)
+			if(strcmp(msgr.mtext, "Bye") == 0) //compares string to look for "Bye" - ends message if found
 			{
 				printf("Sender Ending Queue\n");
 				msgctl(msgid, IPC_RMID, NULL);
