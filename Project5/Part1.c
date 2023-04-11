@@ -6,6 +6,10 @@ a new command input ( parent waits for child). The interpreter program will get
 terminated when the user enters exit.
 */
 
+/*
+Note: For some reason, only 'ps -u username | grep firefox' doesn't work. 
+*/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -40,7 +44,7 @@ int main()
 		pipeline = false;
 
 		//turn input into string list
-		token = strtok(input, search);
+		token = strtok(input, search); //takes pointer up to whitespace
 		// printf("token: %s\n", token);
 		cmd[0] = (char*)malloc(strlen(token)+1);
 		strcpy(cmd[0], token);
